@@ -1,8 +1,8 @@
-# import aiofiles, asyncio
-# async def hi():
-#     async with aiofiles.open('__cache/docs.txt', 'w') as g:
-#         await g.write('hello world')
-#         await g.close()
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(hi())
+import requests
+from bs4 import BeautifulSoup
 
+soup = BeautifulSoup(requests.get('https://disnake.readthedocs.io/en/latest/api.html').text, 'html.parser')
+
+names = soup.find_all('dt', attrs = {'class':'sig sig-object py'})
+names = [i['id'] for i in names]
+print(names)
