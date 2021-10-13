@@ -13,7 +13,7 @@ class DocsCaching:
         """
         Check if query is in cache. If it is in cache, it returns it.
         """
-        return cache if (cache := self.db.get(query)) else False
+        return self.db.get(query)
 
     def cache(self, query: str, desc: str, force: bool = False):
         """

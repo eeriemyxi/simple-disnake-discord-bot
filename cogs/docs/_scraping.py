@@ -4,7 +4,7 @@ from ._caching import DocsCaching
 from bs4 import BeautifulSoup
 import aiohttp
 from cache import AsyncLRU
-
+import re
 
 class Scraping:
     def __init__(self, bot):
@@ -35,9 +35,15 @@ class Scraping:
                 for i in search_list.parent.find("dd").find_all("p", recursive=False)
             ]
         )
+        operations_string = []
         operations = search_list.parent.find('div', attrs = {'class':'operations docutils container'})
-        operations = 'Supported operations:\n'+operations.text if operations else ''
-        return (200, "```py\n{}```\n\n{}\n{}".format(codeblock.text.replace("¶", ""), desc, operations))
+        if operations is not None:
+            operations = operations.find_all('dl', attrs = {'class':'describe'})
+            for i in operations:
+                operations_string.append(('**`{}`**'.format(i.dt.text.strip('\n')), '\n'.join(['> '+i for i in i.dd.text.split('\n') if i != ''])))
+            operations_string = '\n'.join([i for i in ('\n'.join([name+'\n'+desc for name, desc in operations_string])).split('\n') if i != ''])
+        final_string = "```py\n{}```\n{}\n**Supported Operations:**\n{}".format(codeblock.text.replace("¶", ""), desc, operations_string)
+        return (200, re.sub(r'\n\s*\n', '\n\n', final_string))
 
 
     async def get_def(self, query):

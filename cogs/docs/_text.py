@@ -1,7 +1,12 @@
-from cache import AsyncLRU
+from aiohttp.client import request
+from aiohttp.client_reqrep import RequestInfo
+from cache import AsyncLRU, lru
 import aiohttp
+import requests
 from bs4 import BeautifulSoup
-
+from six import MAXSIZE
+from ._scraping import Scraping
+from functools import lru_cache
 names = [
     "disnake.version_info",
     "disnake.__version__",
@@ -2016,9 +2021,7 @@ names = [
     "disnake.opus.OpusNotLoaded",
 ]
 
-@AsyncLRU(maxsize=100)
-async def autocomeplete(inter, string):
-    return [name for name in names if string.lower() in name.lower()][:10]
+
 # @AsyncLRU(max=50)
 # async def _autocomeplete(inter, string):
 #     async with aiohttp.ClientSession() as session:
@@ -2032,3 +2035,39 @@ async def autocomeplete(inter, string):
 #                 for i in soup.find_all("dt", attrs={"class": "sig sig-object py"})
 #             ]
 #             return [name for name in names if string.lower() in name.lower()]
+class Text:
+        
+    # @AsyncLRU(maxsize = 100)
+    # async def _find_class_names(self,query):
+    #     async with aiohttp.ClientSession() as session:
+    #         async with session.get(
+    #             "https://disnake.readthedocs.io/en/latest/api.html"
+    #         ) as response:
+    #             source = await response.text()
+    #             soup = BeautifulSoup(source, "html.parser")
+    #             names = [
+    #                 i["id"]
+    #                 for i in soup.find_all("dt", attrs={"class": "sig sig-object py"})
+    #             ]
+    #             return [name for name in names if query.lower() in name.lower()]
+    # @lru_cache(100)
+    # def get_source(self, idk = None):
+    #     return requests.get('https://disnake.readthedocs.io/en/latest/api.html').text
+
+    # @lru_cache(maxsize = 100)
+    # def _find_class_names(self,query):
+    #     source = self.get_source()
+    #     soup = BeautifulSoup(source, "html.parser")
+    #     names = [
+    #         i["id"]
+    #         for i in soup.find_all("dt", attrs={"class": "sig sig-object py"})
+    #     ]
+    #     return [name for name in names if query.lower() in name.lower()]
+
+    @lru_cache(maxsize = 100)
+    def fix_query(self,query):
+        return [name for name in names if query.lower() in name.lower()][0]
+
+    @AsyncLRU(maxsize=100)
+    async def query_choices(self,inter, string):
+        return [name for name in names if string.lower() in name.lower()][:10]
