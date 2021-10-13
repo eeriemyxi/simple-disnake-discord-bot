@@ -41,8 +41,8 @@ class Scraping:
             operations = operations.find_all('dl', attrs = {'class':'describe'})
             for i in operations:
                 operations_string.append(('**`{}`**'.format(i.dt.text.strip('\n')), '\n'.join(['> '+i for i in i.dd.text.split('\n') if i != ''])))
-            operations_string = '\n'.join([i for i in ('\n'.join([name+'\n'+desc for name, desc in operations_string])).split('\n') if i != ''])
-        final_string = "```py\n{}```\n{}\n**Supported Operations:**\n{}".format(codeblock.text.replace("¶", ""), desc, operations_string)
+            operations_string = "**Supported Operations:**\n"+'\n'.join([i for i in ('\n'.join([name+'\n'+desc for name, desc in operations_string])).split('\n') if i != ''])
+        final_string = "```py\n{}```\n**Description:**\n{}\n{}".format(codeblock.text.replace("¶", ""), desc, operations_string if operations_string != [] else '')
         return (200, re.sub(r'\n\s*\n', '\n\n', final_string))
 
 
