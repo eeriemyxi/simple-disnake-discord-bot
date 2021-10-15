@@ -54,4 +54,4 @@ async def ask(ctx: commands.Context):
         print('Cancelled...')
 
 
-bot.run('ODk0MTM4NzkxNDc0OTA5MjE0.YVlppA.c9lMKrb5GdkTGg4KLM8Nmb1kdPA')
+bot.run('')
