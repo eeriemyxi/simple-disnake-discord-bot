@@ -4,7 +4,6 @@ import asyncio
 from datetime import datetime, timedelta
 import time
 
-from disnake.ext.commands.core import command
 
 
 class Tools(commands.Cog):
@@ -53,7 +52,5 @@ class Tools(commands.Cog):
                 f"Hello <@{inter.author.id}>, I couldn't DM you so I'm reminding you here. You asked me to remind you <t:{int(created_at)}:R>. Reason: `{reason}`"
             )
         return
-
-
 def setup(bot):
     bot.add_cog(Tools(bot))
