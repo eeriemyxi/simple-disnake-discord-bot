@@ -2,3 +2,7 @@ disnake
 deta
 python-dotenv
 markdownify==0.6.1
+async-cache
+aiohttp
+requests
+httpx
