@@ -8,10 +8,14 @@ class ImageSearchCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["img"])
+    @commands.command(aliases=["img", "image"])
     async def imagesearch(self, ctx, query: str):
-        paginator = Paginator(ctx, embeds=await ImageSearch(ctx, query)._fetch_images())
-        paginator.message = await ctx.send(
-            embed=paginator.current_embed, view=paginator
-        )
-        await paginator.wait()
+        embeds = await ImageSearch(ctx, query)._fetch_images()
+        if len(embeds) > 1:
+            paginator = Paginator(ctx, embeds=embeds)
+            paginator.message = await ctx.send(
+                embed=paginator.current_embed, view=paginator
+            )
+            await paginator.wait()
+            return
+        return await ctx.send(embed = disnake.Embed(title = 'No images found.', description=''))

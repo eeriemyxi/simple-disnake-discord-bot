@@ -19,7 +19,7 @@ class Paginator(disnake.ui.View):
             "N", "B", "C", "R", "D"
         )
         self.confirmation = None
-
+    
     @property
     def current_embed(self):
         return self.embeds[self.current_page].set_footer(

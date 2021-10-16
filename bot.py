@@ -4,6 +4,7 @@ import pkgutil
 import deta
 import dotenv
 import os
+
 dotenv.load_dotenv()
 
 
@@ -21,6 +22,6 @@ class DisnakeSimpleBot(commands.Bot):
 bot = DisnakeSimpleBot()
 for cog in pkgutil.iter_modules(["cogs"]):
     bot.load_extension(f"cogs.{cog.name}")
-    print("Loaded cog: {}".format(cog.name))
+    print("Loaded cog: {}".format(cog.name.title()))
 
 bot.run(os.environ.get("TOKEN"))

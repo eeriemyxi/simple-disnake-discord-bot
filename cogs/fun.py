@@ -16,7 +16,7 @@ class Fun(commands.Cog):
             ctx.content,
             str(ctx.author),
             ctx.author.avatar.url,
-            'Edited at '+ctx.created_at.strftime("%x | %X UTC"),
+            ctx.created_at.strftime("%x | %X UTC"),
         )
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
@@ -26,7 +26,7 @@ class Fun(commands.Cog):
             before.content,
             str(before.author),
             before.author.avatar.url,
-            before.created_at.strftime("%x | %X UTC"),
+            'Edited at '+ before.created_at.strftime("%x | %X UTC"),
         )
 
     @commands.command()
