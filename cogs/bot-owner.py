@@ -37,7 +37,7 @@ class easyembed(disnake.Embed):
         return disnake.Color.from_rgb(*(tuple(color)))
 
 
-class Owner(commands.Cog, name="Bot Owner"):
+class Owner(commands.Cog, name="Bot Owner", command_attrs=dict(hidden=True)):
     def __init__(self, bot):
         self.bot = bot
 

@@ -1,11 +1,14 @@
 from typing import Text
 import disnake
 from disnake.ext import commands
+import datetime
 
-
+from disnake.ext.commands.cog import Cog
+from utils.cog_id import COG_ID
 class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.category = COG_ID.FUN
         self.last_deleted = {}
         self.last_edited = {}
     @commands.Cog.listener()
@@ -26,7 +29,7 @@ class Fun(commands.Cog):
             before.content,
             str(before.author),
             before.author.avatar.url,
-            'Edited at '+ before.created_at.strftime("%x | %X UTC"),
+            'Edited at '+before.created_at.strftime("%x | %X UTC"),
         )
 
     @commands.command()
@@ -45,7 +48,7 @@ class Fun(commands.Cog):
     @commands.command(aliases = ['esnipe'])
     async def editsnipe(self, ctx):
         """
-        Shows the most recent edited message.
+        Shows the most recent edited message's content before it was edited.
         """
         await ctx.send(
             embed=disnake.Embed(description=message[0])
@@ -54,7 +57,5 @@ class Fun(commands.Cog):
             if (message := self.last_edited.get(ctx.channel.id))
             else disnake.Embed(title = "Nothing to snipe yet.", description='')
         )
-
-
 def setup(bot):
     bot.add_cog(Fun(bot))

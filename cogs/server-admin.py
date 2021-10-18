@@ -1,11 +1,11 @@
 from disnake.ext import commands
 import disnake
-
+from utils.cog_id import COG_ID
 
 class Server_Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
+        self.category = COG_ID.ADMIN
     @commands.command(description="Kick a server member.", usage="<USER> [REASON]")
     @commands.has_guild_permissions(administrator = True)
     async def kick(self, ctx, user: disnake.Member, *, reason=None):

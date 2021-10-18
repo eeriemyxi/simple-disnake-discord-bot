@@ -2,10 +2,12 @@ import disnake
 from disnake.ext import commands
 from ._scraping import Scraping
 from ._text import Text
+from utils.cog_id import COG_ID
 text = Text()
 class Doc(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.category = COG_ID.INFO
         self.scraper = Scraping(self.bot)
 
     @commands.command(aliases=["d", "doc"])

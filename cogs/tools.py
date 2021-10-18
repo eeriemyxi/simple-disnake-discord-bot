@@ -3,13 +3,13 @@ from disnake.ext import commands
 import asyncio
 from datetime import datetime, timedelta
 import time
-
+from utils.cog_id import COG_ID
 
 
 class Tools(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
+        self.category = COG_ID.TOOLS
     @commands.slash_command()
     async def remindme(
         self,

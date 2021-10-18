@@ -1,10 +1,8 @@
-import disnake
 from disnake.ext import commands
 import pkgutil
 import deta
 import dotenv
 import os
-
 dotenv.load_dotenv()
 
 
@@ -17,7 +15,6 @@ class DisnakeSimpleBot(commands.Bot):
         self.bot_db = deta.Deta(self.db_project_key).Base(name="botdb")
     async def on_ready(self):
         print("Ready!")
-
 
 bot = DisnakeSimpleBot()
 for cog in pkgutil.iter_modules(["cogs"]):

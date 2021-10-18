@@ -1,14 +1,11 @@
 import disnake
 from disnake.ext import commands
-
+from utils.cog_id import COG_ID
 
 class Info(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.command()
-    async def info_command(self, ctx):
-        await ctx.send("hello this is from info cog")
+        self.category = COG_ID.INFO
 
 
 def setup(bot):

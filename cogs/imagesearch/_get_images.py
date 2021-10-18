@@ -18,9 +18,9 @@ class ImageSearch:
         self.query = query
 
     def __fix_url(self, url):
-        '''
+        """
         Some URLs lack the protocol so this function add them manually.
-        '''
+        """
         if not url.startswith("http"):
             return urljoin("http:", url)
         return url
@@ -28,9 +28,9 @@ class ImageSearch:
     async def _fetch_images(self):
         async with httpx.AsyncClient() as client:
             source = await client.get(
-                    "https://searx.xyz/search?format=json&safesearch=2&categories=images&q={}".format(
-                        quote_plus(self.query)
-                    )
+                "https://searx.xyz/search?format=json&safesearch=2&categories=images&q={}".format(
+                    quote_plus(self.query)
+                )
             )
             json = source.json()
             embeds = list()

@@ -1,12 +1,14 @@
 import disnake
 from disnake.ext import commands
-from ._paginator import Paginator
+from utils.paginator import Paginator
 from ._get_images import ImageSearch
+from utils.cog_id import COG_ID
 
 
 class ImageSearchCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.category = COG_ID.IMAGES
 
     @commands.command(aliases=["img", "image"])
     async def imagesearch(self, ctx, query: str):
@@ -18,4 +20,6 @@ class ImageSearchCog(commands.Cog):
             )
             await paginator.wait()
             return
-        return await ctx.send(embed = disnake.Embed(title = 'No images found.', description=''))
+        return await ctx.send(
+            embed=disnake.Embed(title="No images found.", description="")
+        )
