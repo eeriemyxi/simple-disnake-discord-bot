@@ -10,7 +10,7 @@ class ImageSearchCog(commands.Cog):
         self.bot = bot
         self.category = COG_ID.IMAGES
 
-    @commands.command(aliases=["img", "image"])
+    @commands.command(aliases=["img", "image"], usage = '<query>')
     async def imagesearch(self, ctx, query: str):
         embeds = await ImageSearch(ctx, query)._fetch_images()
         if len(embeds) > 1:

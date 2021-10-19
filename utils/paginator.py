@@ -32,7 +32,7 @@ class Paginator(disnake.ui.View):
     @property
     def current_embed(self) -> disnake.Embed:
         return self.embeds[self.current_page].set_footer(
-            text="Page {} of {}".format(self.current_page + 1, self.pages - 1)
+            text="Page {} of {}".format(self.current_page + 1, self.pages)
         )
 
     def current_page_set(self, cmd: str = "next", value: int = None):
@@ -97,7 +97,7 @@ class Paginator(disnake.ui.View):
         ask = await self.ctx.send(
             embed=disnake.Embed(
                 title="Select page",
-                description=f"Enter a page number between (1 - {self.pages - 1}):",
+                description=f"Enter a page number between (1 - {self.pages}):",
             )
         )
         msg = await self.ctx.bot.wait_for(
@@ -108,8 +108,8 @@ class Paginator(disnake.ui.View):
         )
         if msg.content.isnumeric():
             msg_int = int(msg.content)
-            if msg_int > 0 and msg_int < (self.pages - 1):
-                self.current_page_set(value=msg_int - 1)
+            if msg_int > 0 and msg_int <= (self.pages):
+                self.current_page_set(value=msg_int-1)
         await self.message.edit(embed=self.current_embed)
         await ask.delete()
         with suppress(Exception):

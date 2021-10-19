@@ -37,10 +37,19 @@ class HelpCommand(commands.MinimalHelpCommand):
             embed_list.append(
                 disnake.Embed(
                     title=cog.value[1],
-                    description="\n".join(i.name for i in command_list),
+                    description="List of all commands:\n> `<>`: Means that its a required argument\n> `[]`: Means that its an optional argument\n"+"\n".join(await self.__get_command_description(command_list)),
                 )
             )
         return embed_list
+    async def __get_command_description(self, command_list: List[commands.Command]) -> str:
+        descriptions = list()
+        for command in command_list:
+            # command_name = "**{}**".format(command.name)
+            command_usage = ' '+command.usage if command.usage else ''
+            command_description = command.short_doc
+            command_str = "`{}{}`\n{}".format(command.name, command_usage, command_description)
+            descriptions.append(command_str)
+        return descriptions
 
 
 class HelpCommandCog(commands.Cog):

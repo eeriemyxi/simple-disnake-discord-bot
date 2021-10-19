@@ -1,5 +1,6 @@
 import disnake
 from disnake.ext import commands
+from disnake.ext.commands.core import command
 from ._scraping import Scraping
 from ._text import Text
 from utils.cog_id import COG_ID
@@ -10,7 +11,7 @@ class Doc(commands.Cog):
         self.category = COG_ID.INFO
         self.scraper = Scraping(self.bot)
 
-    @commands.command(aliases=["d", "doc"])
+    @commands.command(aliases=["d", "doc"], usage = '<query>')
     async def docs(self, ctx, query: str):
         """
         Get definition from readthedocs.io
@@ -34,3 +35,7 @@ class Doc(commands.Cog):
                 description=await self.scraper.get_def(query),
             )
         )
+    @commands.message_command(name="⏪Reverse")
+    async def reverse(self, inter: disnake.MessageCommandInteraction):
+        await inter.response.defer()
+        await inter.edit_original_message(content = inter.target.content[::-1])
