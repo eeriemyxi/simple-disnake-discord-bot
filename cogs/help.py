@@ -1,3 +1,4 @@
+from typing import List
 import disnake
 from disnake.ext import commands
 from utils.paginator import Paginator
@@ -8,12 +9,12 @@ from utils.cog_id import COG_ID
 class HelpCommand(commands.MinimalHelpCommand):
     async def send_bot_help(self, mapping):
         channel = self.get_destination()
-        paginator = Paginator(ctx=self.context, embeds=await self.get_embeds(mapping))
+        paginator = Paginator(ctx=self.context, embeds=await self._get_embeds(mapping))
         paginator.message = await channel.send(
             embed=paginator.current_embed, view=paginator
         )
 
-    async def get_embeds(self, mapping):
+    async def _get_embeds(self, mapping) -> List[disnake.Embed]:
         embeds = {}
         embed_list = list()
         for cog, command_list in mapping.items():

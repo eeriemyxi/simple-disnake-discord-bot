@@ -1,5 +1,6 @@
 import httpx
-from disnake import Embed
+from typing import List
+import disnake
 from urllib.parse import urljoin, quote_plus
 
 
@@ -17,7 +18,7 @@ class ImageSearch:
         self.ctx = ctx
         self.query = query
 
-    def __fix_url(self, url):
+    def __fix_url(self, url) -> str:
         """
         Some URLs lack the protocol so this function add them manually.
         """
@@ -25,7 +26,10 @@ class ImageSearch:
             return urljoin("http:", url)
         return url
 
-    async def _fetch_images(self):
+    async def _fetch_images(self) -> List[disnake.Embed]:
+        '''
+        Fetches the image data from searx.xyz
+        '''
         async with httpx.AsyncClient() as client:
             source = await client.get(
                 "https://searx.xyz/search?format=json&safesearch=2&categories=images&q={}".format(
@@ -36,7 +40,7 @@ class ImageSearch:
             embeds = list()
             for item in json["results"]:
                 embeds.append(
-                    Embed(title=item["title"], url=self.__fix_url(item["url"]))
+                    disnake.Embed(title=item["title"], url=self.__fix_url(item["url"]))
                     .set_author(
                         name=str(self.ctx.author),
                         icon_url=self.ctx.author.display_avatar,

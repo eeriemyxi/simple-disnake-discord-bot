@@ -4,21 +4,6 @@ from disnake.ext import commands
 from utils.animals import Animals
 from utils.cog_id import COG_ID
 
-def animal_autocomplete(inter, x):
-    animals = (
-        "dog",
-        "cat",
-        "panda",
-        "fox",
-        "red panda",
-        "koala",
-        "bird",
-        "raccoon",
-        "kangaroo",
-    )
-    return [i for i in animals if x.lower() in animals]
-
-
 class Images(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

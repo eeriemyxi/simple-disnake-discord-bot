@@ -7,7 +7,7 @@ from disnake.ext import commands
 
 class Paginator(disnake.ui.View):
     """
-    This is the paginator. Currently used to paginate the image search results and my help command.
+    This is my paginator. Currently used to paginate the image search results and my help command.
 
     Parameters
     ----------
@@ -30,7 +30,7 @@ class Paginator(disnake.ui.View):
         self.confirmation = None
 
     @property
-    def current_embed(self):
+    def current_embed(self) -> disnake.Embed:
         return self.embeds[self.current_page].set_footer(
             text="Page {} of {}".format(self.current_page + 1, self.pages - 1)
         )
