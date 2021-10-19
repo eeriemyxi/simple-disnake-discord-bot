@@ -35,7 +35,3 @@ class Doc(commands.Cog):
                 description=await self.scraper.get_def(query),
             )
         )
-    @commands.message_command(name="⏪Reverse")
-    async def reverse(self, inter: disnake.MessageCommandInteraction):
-        await inter.response.defer()
-        await inter.edit_original_message(content = inter.target.content[::-1])
