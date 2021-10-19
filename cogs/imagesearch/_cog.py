@@ -11,7 +11,10 @@ class ImageSearchCog(commands.Cog):
         self.category = COG_ID.IMAGES
 
     @commands.command(aliases=["img", "image"], usage = '<query>')
-    async def imagesearch(self, ctx, query: str):
+    async def imagesearch(self, ctx, *, query: str):
+        '''
+        Search for images
+        '''
         embeds = await ImageSearch(ctx, query)._fetch_images()
         if len(embeds) > 1:
             paginator = Paginator(ctx, embeds=embeds)

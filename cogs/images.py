@@ -1,5 +1,4 @@
 import disnake
-from disnake.app_commands import Choices
 from disnake.ext import commands
 from utils.animals import Animals
 from utils.cog_id import COG_ID
@@ -8,7 +7,6 @@ class Images(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.category = COG_ID.IMAGES
-        # self.animals = ('dog', 'cat', 'panda', 'fox', 'red panda', 'koala', 'bird', 'raccoon', 'kangaroo')
 
     @commands.slash_command()
     async def animal(
