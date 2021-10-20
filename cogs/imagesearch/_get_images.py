@@ -1,7 +1,7 @@
 import httpx
 from typing import List
 import disnake
-from urllib.parse import urljoin, quote_plus
+from urllib.parse import urljoin, quote_plus, quote
 
 
 class ImageSearch:
@@ -33,7 +33,7 @@ class ImageSearch:
         async with httpx.AsyncClient() as client:
             source = await client.get(
                 "https://searx.xyz/search?format=json&safesearch=2&categories=images&q={}".format(
-                    quote_plus(self.query)
+                    quote(self.query)
                 )
             )
             json = source.json()
