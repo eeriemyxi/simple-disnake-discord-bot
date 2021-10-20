@@ -27,6 +27,16 @@ class Paginator(disnake.ui.View):
         self.btn_id = namedtuple(
             "ID", ("NEXT", "BACK", "CANCEL", "RANDOM", "DELETE", "JUMP")
         )("N", "B", "C", "R", "D", "J")
+        self.btn_items = namedtuple(
+            "ITEMS", ("NEXT", "BACK", "CANCEL", "RANDOM", "DELETE", "JUMP")
+        )(
+            self.next_button,
+            self.back_button,
+            self.cancel_button,
+            self.random_button,
+            self.delete_button,
+            self.jump_button,
+        )
         self.confirmation = None
 
     @property
@@ -34,6 +44,10 @@ class Paginator(disnake.ui.View):
         return self.embeds[self.current_page].set_footer(
             text="Page {} of {}".format(self.current_page + 1, self.pages)
         )
+
+    def remove_button(self, button_id: str) -> None:
+        if button_id in self.btn_items._asdict():
+            self.remove_item(self.btn_items._asdict()[button_id])
 
     def current_page_set(self, cmd: str = "next", value: int = None):
         """
@@ -90,7 +104,7 @@ class Paginator(disnake.ui.View):
         self.current_page_set("random")
         await self.message.edit(embed=self.current_embed)
 
-    @disnake.ui.button(label="Jump", emoji="#️⃣", style=disnake.ButtonStyle.blurple)
+    @disnake.ui.button(label="Jump", emoji="#️⃣", style=disnake.ButtonStyle.blurple, row=0)
     async def jump_button(self, button, inter):
         self.value = self.btn_id.JUMP
         await inter.response.defer()
@@ -109,19 +123,19 @@ class Paginator(disnake.ui.View):
         if msg.content.isnumeric():
             msg_int = int(msg.content)
             if msg_int > 0 and msg_int <= (self.pages):
-                self.current_page_set(value=msg_int-1)
+                self.current_page_set(value=msg_int - 1)
         await self.message.edit(embed=self.current_embed)
         await ask.delete()
         with suppress(Exception):
             await msg.delete()
 
-    @disnake.ui.button(label="Next", emoji="▶️", style=disnake.ButtonStyle.green)
+    @disnake.ui.button(label="Next", emoji="▶️", style=disnake.ButtonStyle.green, row=0)
     async def next_button(self, button, inter):
         self.value = self.btn_id.NEXT
         self.current_page_set("next")
         await self.message.edit(embed=self.current_embed)
 
-    @disnake.ui.button(label="Cancel", emoji="❌", style=disnake.ButtonStyle.red)
+    @disnake.ui.button(label="Cancel", emoji="❌", style=disnake.ButtonStyle.red, row=1)
     async def cancel_button(self, button, inter):
         self.value = self.btn_id.CANCEL
         for item in self.children:
@@ -129,7 +143,7 @@ class Paginator(disnake.ui.View):
         await self.message.edit(embed=self.current_embed, view=self)
         self.stop()
 
-    @disnake.ui.button(label="Delete", emoji="🗑️", style=disnake.ButtonStyle.red)
+    @disnake.ui.button(label="Delete", emoji="🗑️", style=disnake.ButtonStyle.red, row=1)
     async def delete_button(self, button, inter):
         self.value = self.btn_id.DELETE
         await self.message.delete()

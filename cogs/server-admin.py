@@ -2,7 +2,7 @@ from disnake.ext import commands
 import disnake
 from utils.cog_id import COG_ID
 
-class ServerAdmin(commands.Cog):
+class ServerAdmin(commands.Cog, name='Admin only'):
     def __init__(self, bot):
         self.bot = bot
         self.category = COG_ID.ADMIN

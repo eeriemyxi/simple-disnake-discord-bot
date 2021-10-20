@@ -6,12 +6,47 @@ from utils.cog_id import COG_ID
 
 
 class HelpCommand(commands.MinimalHelpCommand):
-    async def send_bot_help(self, mapping):
+    async def send_bot_help(self, mapping) -> None:
         channel = self.get_destination()
         paginator = Paginator(ctx=self.context, embeds=await self._get_embeds(mapping))
+        paginator.remove_button('RANDOM')
         paginator.message = await channel.send(
             embed=paginator.current_embed, view=paginator
         )
+
+    async def send_command_help(self, command: commands.Command) -> None:
+        aliases = ", ".join([f"`{i}`" for i in command.aliases])
+        description = command.short_doc
+        usage = (await self.__get_command_description([command]))[0].split("\n")[0]
+        await self.context.send(
+            embed=disnake.Embed(title=command.name)
+            .add_field(name="What does it do?", value=description, inline=False)
+            .add_field(name="How to use it?", value=usage, inline=False)
+            .add_field(name="Aliases", value=aliases, inline=False)
+        )
+
+    async def send_cog_help(self, cog: commands.Cog) -> None:
+        await self.context.send(
+            embed=disnake.Embed(
+                title=cog.category.value[1],
+                description="List of all commands:\n> `<>`: Means that its a required argument\n> `[]`: Means that its an optional argument\n"
+                + "\n".join(
+                    await self.__get_command_description(
+                        await self.filter_commands(cog.get_commands())
+                    )
+                ),
+            )
+        )
+
+    def command_not_found(self, string: str) -> str:
+        hint = str()
+        for command in self.context.bot.commands:
+            if string in command.name:
+                hint: str = f"\nI think you're looking for `{command.name}`?"
+        return f'Um..."{string}"? Sorry but my owner never added such command or category. :pensive:{hint}'
+
+    async def send_error_message(self, error):
+        await self.context.send(embed=disnake.Embed(title="Error!", description=error))
 
     async def _get_embeds(self, mapping) -> List[disnake.Embed]:
         embeds = {}
