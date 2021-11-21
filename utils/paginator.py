@@ -81,7 +81,7 @@ class Paginator(disnake.ui.View):
         if cmd == "random":
             self.current_page = random.randint(0, self.pages - 1)
             return
-        self.current_page = self.current_page - 1 if self.current_page > 0 else 0
+        self.current_page -= 1 if self.current_page > 0 else 0
         return
 
     async def interaction_check(self, interaction: disnake.MessageInteraction) -> bool:

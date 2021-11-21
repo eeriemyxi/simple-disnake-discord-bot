@@ -24,3 +24,4 @@ def _scraper(source, query):
 
 hi = _scraper(requests.get('https://disnake.readthedocs.io/en/latest/api.html?').text, 'disnake.Embed')
 print(hi)
+

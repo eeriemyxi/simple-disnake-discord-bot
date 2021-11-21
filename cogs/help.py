@@ -9,7 +9,7 @@ class HelpCommand(commands.MinimalHelpCommand):
     async def send_bot_help(self, mapping) -> None:
         channel = self.get_destination()
         paginator = Paginator(ctx=self.context, embeds=await self._get_embeds(mapping))
-        paginator.remove_button('RANDOM')
+        paginator.remove_button("RANDOM")
         paginator.message = await channel.send(
             embed=paginator.current_embed, view=paginator
         )
@@ -71,7 +71,7 @@ class HelpCommand(commands.MinimalHelpCommand):
             embed_list.append(
                 disnake.Embed(
                     title=cog.value[1],
-                    description="List of all commands:\n> `<>`: Means that its a required argument\n> `[]`: Means that its an optional argument\n"
+                    description=f'List of all commands:\n> `<>`: Means that its a required argument\n> `[]`: Means that its an optional argument\n'
                     + "\n".join(await self.__get_command_description(command_list)),
                 )
             )
@@ -84,9 +84,7 @@ class HelpCommand(commands.MinimalHelpCommand):
         for command in command_list:
             command_usage = " " + command.usage if command.usage else ""
             command_description = command.short_doc
-            command_str = "`{}{}`\n{}".format(
-                command.name, command_usage, command_description
-            )
+            command_str = f"`{command.name}{command_usage}`\n{command_description}"
             descriptions.append(command_str)
         return descriptions
 
